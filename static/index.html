@@ -2,602 +2,376 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <title>Соц-Рейтинг Арена</title>
+  <title>Соц-Ростилка Arena</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
     :root {
-      --bg:#0f0f2e;
-      --card:#1f115a;
-      --accent:#9b79ff;
-      --radius:12px;
-      --shadow:0 25px 60px -10px rgba(155,121,255,.35);
-      --text:#eef;
+      --bg:#0f111a;
+      --card:#1f2545;
+      --accent:#3fa9f5;
+      --radius:16px;
+      --shadow:0 30px 80px -10px rgba(63,169,245,0.4);
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;
     }
     *{box-sizing:border-box;}
     body {
       margin:0;
-      font-family: system-ui,-apple-system,BlinkMacSystemFont;
-      background: linear-gradient(135deg,var(--bg), #0f0f5a);
-      color: var(--text);
-    }
-    .container {
-      max-width: 1000px;
-      margin:0 auto;
-      padding:16px 12px 60px;
-    }
-    .header {
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      justify-content: space-between;
-      align-items:center;
-      margin-bottom:8px;
-    }
-    .title {
-      font-size:2rem;
-      margin:0;
-      background: linear-gradient(90deg,#ff85d6,#8c9bff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .sub { font-size:.9rem; margin-top:4px; color:#ccc; }
-    .grid {
-      display:grid;
-      gap:18px;
-      grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
-    }
-    .card {
-      background: rgba(30,20,80,.92);
-      border:2px solid rgba(155,121,255,.6);
-      border-radius: var(--radius);
-      padding:16px 20px 20px;
+      background: radial-gradient(circle at 30% 30%, #1a1f48 0%, #0f111a 80%);
+      color:#f0f5ff;
+      min-height:100vh;
+      padding:1rem;
       position:relative;
-      box-shadow: var(--shadow);
+      overflow-x:hidden;
+    }
+    h1{margin:0;font-size:1.75rem;}
+    .container{max-width:1050px;margin:0 auto;display:grid;gap:16px;}
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      padding:16px;
+      position:relative;
       overflow:hidden;
-      transition: .3s;
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,0.03);
     }
-    .card:hover { transform: translateY(-2px); }
-    .card-header {
-      display:flex;
-      justify-content: space-between;
-      align-items:center;
-      margin-bottom:8px;
-    }
-    .badge {
-      padding:6px 14px;
-      background: linear-gradient(135deg,#ff85d6,#8c9bff);
-      border-radius:999px;
-      font-size:.65rem;
-      font-weight:700;
-      text-transform:uppercase;
-    }
-    .stats { display:grid; gap:6px; margin-bottom:8px; }
-    .row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(255,255,255,.07); }
-    .btn {
-      background: linear-gradient(135deg,#8c9bff,#ff85d6);
+    .flex{display:flex;gap:12px;align-items:center;}
+    .avatar{width:72px;height:72px;border-radius:50%;border:3px solid var(--accent);object-fit:cover;flex-shrink:0;}
+    .badge{display:inline-block;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:999px;font-size:.65rem;margin-right:6px;}
+    .btn{
+      background: linear-gradient(135deg,var(--accent),#26c6ff);
       border:none;
-      padding:10px 14px;
-      border-radius:8px;
+      padding:10px 18px;
+      border-radius:999px;
       cursor:pointer;
       font-weight:600;
       color:#fff;
       position:relative;
       overflow:hidden;
-      transition:transform .2s;
+      transition:filter .2s;
     }
-    .btn:active { transform:scale(.95); }
-    .small { font-size:.75rem; color:#bbb; }
-    .leaderboard { display:flex; flex-direction:column; gap:6px; }
-    .entry {
-      background: rgba(255,255,255,.05);
-      padding:10px;
-      border-radius:8px;
-      display:flex;
-      justify-content:space-between;
-      font-size:.85rem;
-    }
-    .currency {
-      display:flex;
-      gap:8px;
-      align-items:center;
-      margin-bottom:6px;
-    }
-    .stars {
-      display:flex;
-      gap:4px;
-      font-size:1.1rem;
-    }
-    .pulse {
-      animation:pulse .6s ease;
-    }
-    @keyframes pulse {
-      0%{ transform:scale(1); }
-      50%{ transform:scale(1.05); }
-      100%{ transform:scale(1); }
-    }
-    .toast {
-      position:fixed;
-      bottom:16px;
-      right:16px;
-      background: rgba(255,255,255,.06);
-      padding:12px 18px;
-      border:1px solid var(--accent);
-      border-radius:9px;
-      backdrop-filter: blur(6px);
-      font-weight:600;
-      z-index:999;
-    }
-    .wheel-wrapper {
+    .btn:active{filter:brightness(.85);}
+    .small{font-size:.8rem;}
+    .grid{display:grid;gap:12px;}
+    .friends{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:8px;}
+    .friend{
+      background: rgba(255,255,255,0.04);
+      border-radius:12px;
+      padding:8px;
       position:relative;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:6px;
+      font-size:0.75rem;
     }
-    .wheel {
-      width:160px;
+    .stat{display:inline-block;margin-right:8px;font-size:.9rem;}
+    .highlight{background:rgba(63,169,245,0.15);padding:4px 10px;border-radius:8px;}
+    .panel{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .slot{display:flex;gap:8px;font-size:2rem;justify-content:center;margin:12px 0;}
+    .wheel{
+      width:100%;
       height:160px;
-      border-radius:50%;
       position:relative;
-      background: conic-gradient(
-        #7c5cff 0deg 60deg,
-        #ff85d6 60deg 120deg,
-        #5bf5ff 120deg 180deg,
-        #ffda6b 180deg 240deg,
-        #ffa5a5 240deg 300deg,
-        #d19bff 300deg 360deg
-      );
-      border:6px solid rgba(255,255,255,.08);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-size:0;
-      transition: transform 4s cubic-bezier(.17,.67,.83,.67);
-      box-shadow:0 20px 60px -10px rgba(155,121,255,.5);
+      margin:8px 0;
     }
-    .pointer {
-      position:absolute;
-      top:-8px;
-      font-size:28px;
-      color:#fff;
-      text-shadow:0 0 12px rgba(255,255,255,.6);
+    .clicker{display:flex;gap:12px;align-items:center;margin-top:8px;}
+    .share{margin-top:12px;display:inline-block;background:#fff;color:#0f111a;border-radius:999px;padding:8px 16px;font-weight:600;cursor:pointer;}
+    .tiny{font-size:.6rem;color:rgba(255,255,255,0.7);}
+    .stars{color: gold; margin-left:4px;}
+    .pulse{animation:pulse 2s infinite;}
+    @keyframes pulse {
+      0% {box-shadow: 0 0 10px rgba(63,169,245,0.6);}
+      50% {box-shadow: 0 0 20px rgba(63,169,245,0.2);}
+      100% {box-shadow: 0 0 10px rgba(63,169,245,0.6);}
     }
-    .slot { display:flex; gap:10px; margin-bottom:6px; }
-    .reel {
-      flex:1;
-      background: rgba(255,255,255,.05);
-      border-radius:8px;
-      padding:14px;
-      font-size:2.2rem;
-      text-align:center;
-      min-height:70px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
+    /* particle background */
+    #particles {
+      position:fixed;
+      top:0;left:0;
+      width:100%;height:100%;
+      pointer-events:none;
+      z-index:0;
     }
-    .profile-top {display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
-    .title-small { font-size:1rem; font-weight:700; margin:0; }
-    .pill { background: rgba(255,255,255,.08); padding:4px 12px; border-radius:999px; font-size:.6rem; margin-left:6px; }
   </style>
 </head>
 <body>
+  <canvas id="particles"></canvas>
   <div class="container">
-    <div class="header">
-      <div>
-        <h1 class="title">🔥 Соц-Рейтинг Арена</h1>
-        <div class="sub">Твой профиль из Telegram, рейтинг, звёздочки, колесо и слот — всё в одном окне.</div>
-      </div>
-      <div class="currency">
-        <div class="small">Звёздочки:</div>
-        <div class="stars" id="star-display">☆☆☆☆☆ <span id="star-count">0</span></div>
-      </div>
-    </div>
-
-    <div class="grid">
-      <!-- профиль -->
-      <div class="card" id="profile-card">
-        <div class="card-header">
-          <div>
-            <div class="profile-top">
-              <div>
-                <div class="title-small" id="user-name">Anon</div>
-                <div class="small" id="user-id">Telegram ID: —</div>
-              </div>
-              <div class="pill" id="title-badge">Новичок</div>
-            </div>
-          </div>
-          <div class="badge" id="prestige-badge">x1.00</div>
+    <div class="card">
+      <div class="flex">
+        <div style="flex:1;">
+          <h1>Соц-Ростилка Arena</h1>
+          <div class="tiny">Работает через Telegram WebApp. Твой профиль и друзья из чата.</div>
         </div>
-        <div class="stats" id="profile-stats">
-          <!-- rows injected -->
-        </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn" id="daily-btn">Ежедневное /daily</button>
-          <button class="btn" id="prestige-btn">Престиж</button>
+        <div>
           <button class="btn" id="refresh-btn">Обновить</button>
         </div>
-        <div class="small" style="margin-top:8px;">Профиль привязан к Telegram. Все изменения сохраняются на сервере.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="card" id="me-card">
+        <div class="flex">
+          <img id="my-avatar" class="avatar pulse" src="" alt="avatar" />
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="font-size:1.2rem;"><strong id="my-name">...</strong></div>
+              <div class="badge" id="my-title">Новичок</div>
+            </div>
+            <div class="small">
+              <span class="stat">Рейтинг: <strong id="my-rating">0</strong></span>
+              <span class="stat">⭐ <strong id="my-stars">0</strong></span>
+              <span class="stat">Стрик: <strong id="my-streak">0</strong></span>
+              <span class="stat">Престиж x<strong id="my-prestige">1.00</strong></span>
+            </div>
+            <div class="clicker">
+              <button class="btn" id="click-btn">Клик +<span id="click-power">1</span></button>
+              <div>Всего кликов: <strong id="total-clicks">0</strong></div>
+            </div>
+            <div style="margin-top:6px;">
+              <button class="btn" id="daily-btn">Ежедневный</button>
+              <span class="tiny" id="daily-info"></span>
+            </div>
+            <div style="margin-top:6px;">
+              <button class="btn" id="wheel-btn">Колесо удачи</button>
+              <button class="btn" id="slot-btn">Слот</button>
+            </div>
+            <div class="share" id="share-btn">Поделиться в чат</div>
+          </div>
+        </div>
       </div>
 
-      <!-- колесо -->
       <div class="card">
-        <div class="card-header">
-          <div>Колесо удачи</div>
-          <div class="small">Раз в день шанс на бонус</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div><strong>Друзья в чате</strong></div>
+          <div class="tiny">Те, кто уже заходил сюда</div>
         </div>
-        <div class="wheel-wrapper">
-          <div class="pointer">▼</div>
-          <div id="wheel" class="wheel"></div>
-          <div class="small" id="wheel-result">Жми и получай!</div>
-          <button class="btn" id="spin-wheel">Крутить</button>
-        </div>
-      </div>
-
-      <!-- слот -->
-      <div class="card">
-        <div class="card-header">
-          <div>Слот-машина</div>
-          <div class="small">Попробуй выиграть рейтинг</div>
-        </div>
-        <div class="slot">
-          <div class="reel" id="r1">?</div>
-          <div class="reel" id="r2">?</div>
-          <div class="reel" id="r3">?</div>
-        </div>
-        <div class="small" id="slot-result">Нажми &quot;Играть&quot;.</div>
-        <button class="btn" id="spin-slot">Играть</button>
-      </div>
-
-      <!-- лидерборд -->
-      <div class="card">
-        <div class="card-header">
-          <div>Локальный лидерборд</div>
-          <div class="small">Соревнуйся по рейтингу</div>
-        </div>
-        <div class="leaderboard" id="leaderboard"></div>
-        <div style="margin-top:8px;">
-          <button class="btn" id="clear-lb">Очистить топ</button>
+        <div id="friends-list" class="friends">
+          <!-- друзья -->
         </div>
       </div>
     </div>
 
-    <div style="margin-top:24px;">
-      <div class="card">
-        <div class="card-header">
-          <div>FAQ / Как играть</div>
+    <div class="card">
+      <div class="flex">
+        <div style="flex:1;">
+          <div><strong>Текущая активность</strong></div>
+          <div class="tiny">Статистика и апгрейды</div>
         </div>
-        <div class="small">
-          <ul>
-            <li>Профиль подтягивается из Telegram WebApp. Если открываешь вне Telegram — играет локально.</li>
-            <li>/daily — раз в 24 часа случайное изменение рейтинга, влияет стрик и престиж.</li>
-            <li>Престиж: при ≥1000 рейтинг сбрасывается до 100, множитель растёт.</li>
-            <li>Колесо и слот дают бонусы: рейтинг, звёздочки, множители.</li>
-            <li>Лидерборд локальный, но можно расширить на глобальный через API.</li>
-          </ul>
+        <div>
+          <div class="highlight" id="last-action">—</div>
         </div>
+      </div>
+      <div style="margin-top:8px;">
+        <div><strong>Колесо удачи:</strong> результат: <span id="wheel-result">—</span></div>
+        <div class="tiny">Можно выиграть рейтинг, звёздочки, престиж.</div>
+      </div>
+      <div style="margin-top:8px;">
+        <div><strong>Слот:</strong> <span id="slot-reels">—</span> выплата: <span id="slot-payout">0</span></div>
       </div>
     </div>
   </div>
 
-  <div id="toast-container"></div>
-
   <script>
-    const API_BASE = ""; // если API живёт на том же домене, или укажи полный URL, например https://your-backend.domain
+    const initData = window.Telegram?.WebApp?.initData || "";
+    const chat_id = new URLSearchParams(window.location.search).get("chat_id");
+    const WebApp = window.Telegram?.WebApp;
+    if (WebApp) WebApp.expand();
 
-    // Toast
-    function toast(msg) {
-      const t = document.createElement("div");
-      t.className = "toast";
+    function toast(msg, duration=2500){
+      const t = document.createElement('div');
       t.textContent = msg;
-      document.getElementById("toast-container").appendChild(t);
-      setTimeout(() => t.remove(), 2200);
+      t.style.position='fixed';
+      t.style.bottom='20px';
+      t.style.left='50%';
+      t.style.transform='translateX(-50%)';
+      t.style.background='rgba(0,0,0,0.8)';
+      t.style.padding='12px 20px';
+      t.style.borderRadius='999px';
+      t.style.color='#fff';
+      t.style.zIndex=9999;
+      t.style.fontSize='14px';
+      document.body.appendChild(t);
+      setTimeout(()=>t.remove(), duration);
     }
 
-    // Telegram WebApp
-    const isTelegram = !!window.Telegram?.WebApp;
-    if (isTelegram) {
-      window.Telegram.WebApp.ready();
-    }
-
-    // State
-    let profile = {
-      user_id: null,
-      username: "Anon",
-      rating: 100,
-      title: "Новичок",
-      streak: 0,
-      prestige_multiplier: 1.0,
-      prestige_level: 0,
-      stars: 0,
-      last_daily: null,
-    };
-    const LB_KEY = "sr_arena_leaderboard_v1";
-
-    function saveLocalLeaderboard(arr) {
-      localStorage.setItem(LB_KEY, JSON.stringify(arr));
-    }
-    function loadLocalLeaderboard() {
-      try {
-        return JSON.parse(localStorage.getItem(LB_KEY) || "[]");
-      } catch { return []; }
-    }
-    function updateLocalLeaderboard() {
-      const lb = loadLocalLeaderboard();
-      const existing = lb.find(e => e.user_id === profile.user_id);
-      if (existing) {
-        existing.rating = profile.rating;
-        existing.updated = Date.now();
-      } else {
-        lb.push({ user_id: profile.user_id, username: profile.username, rating: profile.rating, updated: Date.now() });
-      }
-      lb.sort((a,b)=>b.rating - a.rating);
-      saveLocalLeaderboard(lb.slice(0, 20));
-      renderLeaderboard();
-    }
-
-    function renderLeaderboard() {
-      const container = document.getElementById("leaderboard");
-      container.innerHTML = "";
-      const lb = loadLocalLeaderboard();
-      if (!lb.length) {
-        container.innerHTML = "<div class='small'>Топ пуст — играй чтобы попасть.</div>";
-        return;
-      }
-      lb.forEach((e,i)=>{
-        const div = document.createElement("div");
-        div.className = "entry";
-        div.innerHTML = `<div>${i+1}. ${e.username}</div><div>${e.rating} ★</div>`;
-        container.appendChild(div);
+    async function postJSON(url, body) {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(body),
       });
-    }
-
-    function setProfileUI() {
-      document.getElementById("user-name").innerText = profile.username;
-      document.getElementById("user-id").innerText = `ID: ${profile.user_id}`;
-      document.getElementById("prestige-badge").innerText = `x${profile.prestige_multiplier.toFixed(2)}`;
-      document.getElementById("title-badge").innerText = profile.title;
-      document.getElementById("star-count").innerText = profile.stars;
-      // rows
-      const stats = document.getElementById("profile-stats");
-      stats.innerHTML = "";
-      const rows = [
-        ["Рейтинг", profile.rating + " ★"],
-        ["Стрик", profile.streak + " дн."],
-        ["Престиж уровень", profile.prestige_level],
-        ["Следующий /daily", profile.last_daily ? new Date(profile.last_daily).toLocaleString() : "—"],
-      ];
-      rows.forEach(([k,v])=>{
-        const r = document.createElement("div");
-        r.className = "row";
-        r.innerHTML = `<div>${k}</div><div>${v}</div>`;
-        stats.appendChild(r);
-      });
-    }
-
-    function getInitDataStr() {
-      if (isTelegram) {
-        return window.Telegram.WebApp.initData || "";
+      if (!res.ok) {
+        const txt = await res.text();
+        throw new Error(txt);
       }
-      // как fallback: из query param
-      const params = new URLSearchParams(window.location.search);
-      return params.get("init_data") || "";
+      return res.json();
     }
 
-    async function syncProfile() {
-      const init_data = getInitDataStr();
-      const chat_id = new URLSearchParams(window.location.search).get("chat_id") || 0;
-      if (!API_BASE) {
-        // offline fallback: сохраняем в localStorage
-        const saved = JSON.parse(localStorage.getItem("sr_offline_profile") || "{}");
-        if (saved.user_id) profile = {...profile, ...saved};
-        setProfileUI();
-        updateLocalLeaderboard();
+    function makeAvatarUrl(user_id) {
+      return `/avatar/${chat_id}/${user_id}?init_data=${encodeURIComponent(initData)}`;
+    }
+
+    function createFriendCard(f) {
+      const div = document.createElement("div");
+      div.className = "friend";
+      div.innerHTML = `
+        <div class="flex">
+          <img class="avatar" src="${f.avatar_url}" alt="a" />
+          <div style="flex:1;margin-left:6px;">
+            <div><strong>${f.username || 'Anon'}</strong></div>
+            <div class="small">
+              Рейтинг: ${f.rating} <span class="stars">⭐${f.stars}</span>
+            </div>
+            <div class="tiny">${f.title}</div>
+          </div>
+        </div>
+      `;
+      return div;
+    }
+
+    async function loadProfile() {
+      if (!chat_id) {
+        document.body.innerHTML = "<p style='color:#f99;'>Ошибка: chat_id не передан в URL.</p>";
         return;
       }
       try {
-        const resp = await fetch(`${API_BASE}/api/profile`, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({ init_data, chat_id: Number(chat_id) })
-        });
-        const data = await resp.json();
-        if (data.ok) {
-          Object.assign(profile, {
-            user_id: data.user.user_id,
-            username: data.user.username,
-            rating: data.user.rating,
-            title: data.user.title,
-            streak: data.user.streak,
-            prestige_multiplier: data.user.prestige_multiplier,
-            prestige_level: data.user.prestige_level,
-            stars: data.user.stars,
-            last_daily: data.user.next_daily_available_in === 0 ? new Date().toISOString() : profile.last_daily
+        const profile = await postJSON("/api/profile", {init_data: initData, chat_id: parseInt(chat_id)});
+        const u = profile.user;
+        document.getElementById("my-name").textContent = u.username;
+        document.getElementById("my-title").textContent = u.title;
+        document.getElementById("my-rating").textContent = u.rating;
+        document.getElementById("my-stars").textContent = u.stars;
+        document.getElementById("my-streak").textContent = u.streak;
+        document.getElementById("my-prestige").textContent = parseFloat(u.prestige_multiplier).toFixed(2);
+        document.getElementById("click-power").textContent = u.click_power;
+        document.getElementById("total-clicks").textContent = u.total_clicks;
+        document.getElementById("my-avatar").src = makeAvatarUrl(u.user_id);
+        document.getElementById("last-action").textContent = "Добро пожаловать, обновлено";
+
+        // friends
+        const friendsResp = await postJSON("/api/chat_friends", {init_data: initData, chat_id: parseInt(chat_id)});
+        const list = document.getElementById("friends-list");
+        list.innerHTML = "";
+        friendsResp.friends.forEach(f => {
+          if (f.user_id === profile.user.user_id) return; // себя не дублируем
+          const card = createFriendCard({
+            ...f,
+            avatar_url: `/avatar/${chat_id}/${f.user_id}?init_data=${encodeURIComponent(initData)}`
           });
-          setProfileUI();
-          updateLocalLeaderboard();
-        } else {
-          toast("Не удалось подгрузить профиль.");
-        }
+          list.appendChild(card);
+        });
+      } catch (err) {
+        console.error(err);
+        toast("Ошибка загрузки профиля");
+      }
+    }
+
+    async function doClick() {
+      try {
+        const r = await postJSON("/api/click", {init_data: initData, chat_id: parseInt(chat_id)});
+        document.getElementById("my-rating").textContent = r.new_rating;
+        document.getElementById("total-clicks").textContent = r.total_clicks;
+        document.getElementById("click-power").textContent = r.click_power;
+        document.getElementById("last-action").textContent = `Клик: +${r.gain}`;
       } catch (e) {
-        console.warn(e);
-        toast("Ошибка соединения с API, игра в оффлайн режиме.");
-        // локально
-        const saved = JSON.parse(localStorage.getItem("sr_offline_profile") || "{}");
-        if (saved.user_id) profile = {...profile, ...saved};
-        setProfileUI();
-        updateLocalLeaderboard();
+        toast("Ошибка клика");
       }
     }
 
     async function doDaily() {
-      const init_data = getInitDataStr();
-      const chat_id = new URLSearchParams(window.location.search).get("chat_id") || 0;
-      if (!API_BASE) {
-        toast("Оффлайн: /daily работает локально.");
-        // локальная логика (упрощённо)
-        const now = Date.now();
-        const last = profile.last_daily ? new Date(profile.last_daily).getTime() : 0;
-        if (now - last < 24*3600*1000) {
-          toast("Уже делал /daily, подожди.");
-          return;
-        }
-        const delta = Math.floor((Math.random()*21 - 10) * profile.prestige_multiplier);
-        profile.rating = Math.max(0, profile.rating + delta);
-        profile.streak = profile.last_daily && now - last < 48*3600*1000 ? profile.streak + 1 : 1;
-        profile.last_daily = new Date().toISOString();
-        localStorage.setItem("sr_offline_profile", JSON.stringify(profile));
-        setProfileUI();
-        updateLocalLeaderboard();
-        toast(`${delta >= 0 ? "+" : ""}${delta} рейтинга`);
-        return;
-      }
       try {
-        const resp = await fetch(`${API_BASE}/api/daily`, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({ init_data, chat_id: Number(chat_id) })
-        });
-        const data = await resp.json();
-        if (data.ok) {
-          profile.rating = data.user.rating;
-          profile.streak = data.daily.streak;
-          profile.prestige_multiplier = data.user.prestige_multiplier;
-          profile.prestige_level = data.user.prestige_level;
-          profile.stars = data.user.stars || profile.stars;
-          setProfileUI();
-          updateLocalLeaderboard();
-          toast(`Δ ${data.daily.delta} рейтинга`);
-        } else {
-          toast("Нельзя /daily: " + (data.error || "ох уж"));
-        }
+        const r = await postJSON("/api/daily", {init_data: initData, chat_id: parseInt(chat_id)});
+        document.getElementById("my-rating").textContent = r.user.rating;
+        document.getElementById("my-streak").textContent = r.daily.streak;
+        document.getElementById("last-action").textContent = `Ежедневный: ${r.daily.delta >=0 ? '+' : ''}${r.daily.delta}`;
       } catch (e) {
-        console.warn(e);
-        toast("Ошибка /daily");
+        document.getElementById("daily-info").textContent = e.message;
       }
     }
 
     async function spinWheel() {
-      const init_data = getInitDataStr();
-      const chat_id = new URLSearchParams(window.location.search).get("chat_id") || 0;
-      if (!API_BASE) {
-        // локальный эффект
-        const prizes = ["+50", "+1⭐", "x1.1", "ничего", "+100", "+2⭐"];
-        const pick = prizes[Math.floor(Math.random()*prizes.length)];
-        if (pick.includes("50")) profile.rating += 50;
-        if (pick.includes("100")) profile.rating += 100;
-        if (pick.includes("⭐")) profile.stars += parseInt(pick.replace(/\D/g,"")) || 1;
-        if (pick.includes("x1.1")) profile.prestige_multiplier *= 1.1;
-        setProfileUI();
-        updateLocalLeaderboard();
-        toast("Колесо: " + pick);
-        document.getElementById("wheel-result").innerText = "Выпало: " + pick;
-        return;
-      }
       try {
-        const resp = await fetch(`${API_BASE}/api/wheel`, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({ init_data, chat_id: Number(chat_id) })
-        });
-        const data = await resp.json();
-        if (data.ok) {
-          profile.rating = data.user.rating;
-          profile.prestige_multiplier = data.user.prestige_multiplier;
-          profile.stars = data.user.stars;
-          setProfileUI();
-          updateLocalLeaderboard();
-          toast("Колесо: " + data.result);
-          document.getElementById("wheel-result").innerText = "Выпало: " + data.result;
-        }
+        const r = await postJSON("/api/wheel", {init_data: initData, chat_id: parseInt(chat_id)});
+        document.getElementById("wheel-result").textContent = r.result;
+        document.getElementById("my-rating").textContent = r.user.rating;
+        document.getElementById("my-stars").textContent = r.user.stars;
+        document.getElementById("my-prestige").textContent = parseFloat(r.user.prestige_multiplier).toFixed(2);
+        document.getElementById("last-action").textContent = `Колесо: ${r.result}`;
       } catch (e) {
-        console.warn(e);
         toast("Ошибка колеса");
       }
     }
 
-    async function spinSlot() {
-      const init_data = getInitDataStr();
-      const chat_id = new URLSearchParams(window.location.search).get("chat_id") || 0;
-      if (!API_BASE) {
-        // локальный слот-пример
-        const symbols = ["🍒","🍋","🔔","⭐","7️⃣"];
-        const a = symbols[Math.floor(Math.random()*symbols.length)];
-        const b = symbols[Math.floor(Math.random()*symbols.length)];
-        const c = symbols[Math.floor(Math.random()*symbols.length)];
-        document.getElementById("r1").innerText = a;
-        document.getElementById("r2").innerText = b;
-        document.getElementById("r3").innerText = c;
-        let payout = 0;
-        if (a===b && b===c) payout = 200;
-        else if (a===b || b===c || a===c) payout = 50;
-        profile.rating += payout;
-        setProfileUI();
-        updateLocalLeaderboard();
-        document.getElementById("slot-result").innerText = payout > 0 ? `Выигрыш +${payout}` : "Ничего";
-        toast("Слот: " + (payout>0 ? `+${payout}` : "пусто"));
-        return;
-      }
+    async function playSlot() {
       try {
-        const resp = await fetch(`${API_BASE}/api/slot`, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({ init_data, chat_id: Number(chat_id) })
-        });
-        const data = await resp.json();
-        if (data.ok) {
-          document.getElementById("r1").innerText = data.reels[0];
-          document.getElementById("r2").innerText = data.reels[1];
-          document.getElementById("r3").innerText = data.reels[2];
-          profile.rating = data.user.rating;
-          setProfileUI();
-          updateLocalLeaderboard();
-          document.getElementById("slot-result").innerText = data.payout > 0 ? `Выигрыш +${data.payout}` : "Ничего";
-          toast("Слот: " + (data.payout>0 ? `+${data.payout}` : "пусто"));
-        }
+        const r = await postJSON("/api/slot", {init_data: initData, chat_id: parseInt(chat_id)});
+        document.getElementById("slot-reels").textContent = r.reels.join(" ");
+        document.getElementById("slot-payout").textContent = r.payout;
+        document.getElementById("my-rating").textContent = r.user.rating;
+        document.getElementById("last-action").textContent = `Слот: +${r.payout}`;
       } catch (e) {
-        console.warn(e);
         toast("Ошибка слота");
       }
     }
 
-    // обработчики
-    document.getElementById("daily-btn").addEventListener("click", async ()=>{
-      await doDaily();
-      document.getElementById("profile-card").classList.add("pulse");
-      setTimeout(()=> document.getElementById("profile-card").classList.remove("pulse"), 500);
-    });
-    document.getElementById("prestige-btn").addEventListener("click", ()=>{
-      if (profile.rating < 1000) {
-        toast("Нужно ≥1000 рейтинга");
-        return;
+    document.getElementById("click-btn").addEventListener("click", doClick);
+    document.getElementById("daily-btn").addEventListener("click", doDaily);
+    document.getElementById("wheel-btn").addEventListener("click", spinWheel);
+    document.getElementById("slot-btn").addEventListener("click", playSlot);
+    document.getElementById("refresh-btn").addEventListener("click", loadProfile);
+    document.getElementById("share-btn").addEventListener("click", () => {
+      if (WebApp && WebApp.sendData) {
+        const shareText = `Я нарастил рейтинг ${document.getElementById("my-rating").textContent} ⭐ в соц-ростилке!`;
+        WebApp.sendData(JSON.stringify({action:"share", text: shareText}));
+        toast("Поделился в чат!");
       }
-      profile.prestige_level += 1;
-      profile.prestige_multiplier += 0.1;
-      profile.rating = 100;
-      toast("Престиж: x" + profile.prestige_multiplier.toFixed(2));
-      setProfileUI();
-      updateLocalLeaderboard();
-    });
-    document.getElementById("refresh-btn").addEventListener("click", syncProfile);
-    document.getElementById("spin-wheel").addEventListener("click", spinWheel);
-    document.getElementById("spin-slot").addEventListener("click", spinSlot);
-    document.getElementById("clear-lb").addEventListener("click", ()=>{
-      localStorage.removeItem(LB_KEY);
-      renderLeaderboard();
     });
 
-    // init
-    (async ()=>{
-      if (isTelegram) {
-        const user = window.Telegram.WebApp.initDataUnsafe?.user;
-        if (user) {
-          profile.username = user.username || `${user.first_name || ""} ${user.last_name || ""}`.trim();
-          profile.user_id = user.id;
-        }
+    // simple particle background
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    function createParticles(count=60) {
+      particles = [];
+      for (let i=0;i<count;i++){
+        particles.push({
+          x: Math.random()*canvas.width,
+          y: Math.random()*canvas.height,
+          r: Math.random()*2+1,
+          dx: (Math.random()-0.5)*0.3,
+          dy: (Math.random()-0.5)*0.3,
+          alpha: Math.random()*0.5+0.2,
+          phase: Math.random()*Math.PI*2
+        });
       }
-      await syncProfile();
-    })();
+    }
+    function draw() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      particles.forEach(p=>{
+        p.x += p.dx;
+        p.y += p.dy;
+        p.phase += 0.03;
+        if (p.x<0) p.x=canvas.width;
+        if (p.x>canvas.width) p.x=0;
+        if (p.y<0) p.y=canvas.height;
+        if (p.y>canvas.height) p.y=0;
+        const size = p.r + Math.sin(p.phase)*0.5;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(63,169,245,${(Math.sin(p.phase)*0.2 + p.alpha)})`;
+        ctx.arc(p.x,p.y,size,0,Math.PI*2);
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    createParticles(100);
+    draw();
+
+    // init
+    loadProfile();
   </script>
 </body>
 </html>
